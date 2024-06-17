@@ -3,12 +3,15 @@
 import { Checkbox } from "@/components/checkbox";
 import { Header } from "@/components/header";
 import { Input } from "@/components/input";
+import MultiRangeSlider from "@/components/multi-range/multi-range-slider";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
   const [title, setTitle] = useState('')
+  const [priceMin, setPriceMin] = useState(0);
+  const [priceMax, setPriceMax] = useState(500);
   const [checkboxes, setCheckboxes] = useState([
     { label: 'Botas', checked: false },
     { label: 'Chinelos', checked: false },
@@ -23,6 +26,11 @@ export default function Home() {
     updatedCheckboxes[index].checked = !updatedCheckboxes[index].checked;
     setCheckboxes(updatedCheckboxes);
   };
+
+  const handleGetMinMax = (priceMin: number, priceMax: number) => {
+    setPriceMin(priceMin)
+    setPriceMax(priceMax)
+  }
 
   return (
     <main className="flex flex-col w-screen">
@@ -76,7 +84,24 @@ export default function Home() {
                 ))}
               </nav>
             </div>
-
+            <div className="bg-gray-200 w-72 p-4 rounded-lg">
+              <h4>Preço</h4>
+              <MultiRangeSlider
+                min={0}
+                max={500}
+                onChange={({ min, max }: { min: number; max: number }) =>
+                  handleGetMinMax(min, max)
+                }
+              />
+              <div className="flex gap-4">
+                <p className="w-full bg-gray-300 rounded-t-lg py-2 pl-4 text-sm">Minimo</p>
+                <p className="w-full bg-gray-300 rounded-t-lg py-2 pl-4 text-sm">Maximo</p>
+              </div>
+              <div className="flex gap-4">
+                <p className="w-full bg-gray-300 rounded-b-lg py-2 pl-4 text-sm">R$ {priceMin}</p>
+                <p className="w-full bg-gray-300 rounded-b-lg py-2 pl-4 text-sm">R$ {priceMax}</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
