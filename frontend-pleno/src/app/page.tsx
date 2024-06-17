@@ -27,8 +27,8 @@ export default function Home() {
     { label: 'Botas', checked: false },
     { label: 'Chinelos', checked: false },
     { label: 'Chuteiras', checked: false },
-    { label: 'Sandálias', checked: false },
-    { label: 'Tênis', checked: false },
+    { label: 'Sandalias', checked: false },
+    { label: 'Tenis', checked: false },
   ]);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function Home() {
   }, []);
 
   const getRandomCategory = (): string => {
-    const categories = ['Botas', 'Chinelos', 'Chuteiras', 'Sandálias', 'Tênis'];
+    const categories = ['Botas', 'Chinelos', 'Chuteiras', 'Sandalias', 'Tenis'];
     const randomIndex = Math.floor(Math.random() * categories.length);
     return categories[randomIndex];
   };

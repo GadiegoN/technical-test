@@ -35,5 +35,5 @@ Ferramentas utilizadas
 ### Paginas.
 
 - [x] Home
-- [ ] Product
+- [x] Product
 - [ ] Cart

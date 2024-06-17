@@ -1,4 +1,8 @@
 'use client'
+import { Button } from "@/components/button";
+import Logo from "@/components/logo";
+import { Clover } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface ProductProps {
@@ -37,17 +41,51 @@ export default function Product({ params }: { params: { category: string, id: st
         }
     }, [params.id, params.category]);
 
+    const handleAddToCart = (id: number) => {
+        console.log('id: ', id)
+    }
+
     if (!product) {
         return <p>Carregando...</p>;
     }
 
     return (
-        <div>
-            <h1>Detalhes do Produto</h1>
-            <h2>{product.title}</h2>
-            <p>{product.body}</p>
-            <p>Preço: R${product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-            <p>Categoria: {product.category}</p>
-        </div>
+        <section className="flex flex-col w-full h-full lg:flex-row gap-4 mt-10">
+            <div className="flex flex-col lg:flex-row w-11/10 lg:w-full mx-auto lg:mx-0 gap-2">
+                <div className="flex lg:flex-col gap-4 justify-between w-[120px]">
+                    {Array.from({ length: 4 }, (_, index) => (
+                        <Image
+                            key={index}
+                            src="/model.png"
+                            width={330}
+                            height={330}
+                            alt="Imagem com o fundo laranjado e com um Tenis preto com o solado branco"
+                            className="cursor-pointer w-full rounded-lg"
+                        />
+                    ))}
+                </div>
+                <div className="w-full h-full flex justify-center items-center">
+                    <Image
+                        src="/model.png"
+                        width={330}
+                        height={330}
+                        alt="Imagem com o fundo laranjado e com um Tenis preto com o solado branco"
+                        className="w-full h-full object-contain md:object-cover rounded-lg"
+                    />
+                </div>
+            </div>
+            <div className="flex flex-col justify-between gap-4 mt-20 lg:mt-0">
+                <p className="text-gray-400 text-sm">{product.category}</p>
+                <h3 className="text-gray-500 text-sm">{product.title}</h3>
+                <h2 className="font-semibold text-xl">{product.body}</h2>
+                <div className="bg-gray-200 flex flex-col justify-center items-center p-4">
+                    <Clover className="text-primary" />
+                    <p className="line-through text-gray-400 text-sm">De R$ 8.0000,00</p>
+                    <p className="font-semibold text-xl">Preço: R${product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                    <p className="text-gray-400 text-sm">no pix <span className="text-primary">10%</span> de desconto</p>
+                </div>
+                <Button title="Adicionar no carrinho" onClick={() => handleAddToCart(product.id)} />
+            </div>
+        </section>
     )
 }
