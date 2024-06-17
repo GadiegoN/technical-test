@@ -80,6 +80,19 @@ export default function Home() {
     console.log(productId)
   };
 
+  const filteredProductsByCategory = listProduct.filter(product =>
+    checkboxes.some(checkbox => checkbox.checked && checkbox.label === product.category) &&
+    product.price >= priceMin &&
+    product.price <= priceMax &&
+    product.title.toLowerCase().includes(title.toLowerCase())
+  );
+
+  const filteredProducts = listProduct.filter(product =>
+    product.price >= priceMin &&
+    product.price <= priceMax &&
+    product.title.toLowerCase().includes(title.toLowerCase())
+  );
+
   return (
     <main className="flex flex-col w-screen">
       <Header />
@@ -154,7 +167,10 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:ml-4 m-4 mx-auto">
             {
-              listProduct.map((product) => (
+              (filteredProductsByCategory.length > 0
+                ? filteredProductsByCategory
+                : filteredProducts
+              ).map((product) => (
                 <ListProduct
                   key={product.id}
                   title={product.title}
