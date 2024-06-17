@@ -11,10 +11,24 @@ interface ProductProps {
     body: string;
     price: number;
     category: string;
+    quantity: number
 }
 
 export default function Product({ params }: { params: { category: string, id: string } }) {
     const [product, setProduct] = useState<ProductProps | null>(null);
+    const [cartStore, setCartStore] = useState<ProductProps[]>(getCartStorage())
+
+    function getCartStorage() {
+        if (typeof window !== 'undefined') {
+            const cartStorage = localStorage.getItem("flow-store")
+
+            if (cartStorage) {
+                return JSON.parse(cartStorage)
+            }
+
+            return []
+        }
+    }
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -30,6 +44,7 @@ export default function Product({ params }: { params: { category: string, id: st
                     body: data.body,
                     price: parseFloat((Math.random() * 500).toFixed(2)),
                     category: params.category,
+                    quantity: product?.quantity || 0,
                 });
             } catch (error) {
                 console.error('Erro:', error);
@@ -39,10 +54,23 @@ export default function Product({ params }: { params: { category: string, id: st
         if (params.id) {
             fetchProduct();
         }
-    }, [params.id, params.category]);
+    }, [params.id, params.category, product?.quantity]);
 
-    const handleAddToCart = (id: number) => {
-        console.log('id: ', id)
+    const handleAddToCart = async (id: number) => {
+        const productToAdd = product
+
+        if (productToAdd) {
+            const existingProduct = cartStore.find(item => item.id === id)
+
+            if (existingProduct) {
+                existingProduct.quantity += 1
+                setCartStore([...cartStore])
+                localStorage.setItem('flow-store', JSON.stringify(cartStore))
+            } else {
+                setCartStore([...cartStore, { ...productToAdd, quantity: 1 }])
+                localStorage.setItem('flow-store', JSON.stringify(cartStore))
+            }
+        }
     }
 
     if (!product) {

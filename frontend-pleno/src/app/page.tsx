@@ -15,10 +15,12 @@ interface ProductProps {
   body: string;
   price: number;
   category: string;
+  quantity: number;
 }
 
 export default function Home() {
   const [listProduct, setListProduct] = useState<ProductProps[]>([]);
+  const [cartStore, setCartStore] = useState<ProductProps[]>(getCartStorage())
 
   const [title, setTitle] = useState('')
   const [priceMin, setPriceMin] = useState(0);
@@ -30,6 +32,18 @@ export default function Home() {
     { label: 'Sandalias', checked: false },
     { label: 'Tenis', checked: false },
   ]);
+
+  function getCartStorage() {
+    if (typeof window !== 'undefined') {
+      const cartStorage = localStorage.getItem("flow-store")
+
+      if (cartStorage) {
+        return JSON.parse(cartStorage)
+      }
+
+      return []
+    }
+  }
 
   useEffect(() => {
     async function getProducts() {
@@ -76,8 +90,22 @@ export default function Home() {
     setPriceMax(priceMax)
   }
 
-  const addToCart = (productId: number) => {
-    console.log(productId)
+  const handleAddToCart = async (id: number) => {
+    const productToAdd = listProduct.find(product => product.id === id);
+
+    if (productToAdd) {
+      const existingProduct = cartStore.find(item => item.id === id);
+
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        productToAdd.quantity = 1;
+        cartStore.push(productToAdd);
+      }
+
+      setCartStore([...cartStore]);
+      localStorage.setItem('flow-store', JSON.stringify(cartStore));
+    }
   };
 
   const filteredProductsByCategory = listProduct.filter(product =>
@@ -177,7 +205,7 @@ export default function Home() {
                   price={product.price}
                   body={product.body}
                   category={product.category}
-                  onClick={() => addToCart(product.id)}
+                  onClick={() => handleAddToCart(product.id)}
                   id={product.id.toString()}
                 />
               ))}
