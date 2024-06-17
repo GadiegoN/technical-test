@@ -24,7 +24,7 @@ Ferramentas utilizadas
 
 ### Componentes.
 
-- [ ] Input
+- [x] Input
 - [x] Button
 - [ ] Header
 - [ ] Checkbox
