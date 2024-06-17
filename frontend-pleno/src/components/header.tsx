@@ -29,10 +29,6 @@ export function Header() {
     }
 
     useEffect(() => {
-    }, [])
-
-
-    useEffect(() => {
         const getTotalItemsInCart = () => {
             return cartStore.reduce((total, item) => total + item.quantity, 0);
         };

@@ -36,4 +36,4 @@ Ferramentas utilizadas
 
 - [x] Home
 - [x] Product
-- [ ] Cart
+- [x] Cart
