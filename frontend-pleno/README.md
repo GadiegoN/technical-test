@@ -25,7 +25,7 @@ Ferramentas utilizadas
 ### Componentes.
 
 - [ ] Input
-- [ ] Button
+- [x] Button
 - [ ] Header
 - [ ] Checkbox
 - [ ] MultiRange
