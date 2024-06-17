@@ -28,12 +28,12 @@ Ferramentas utilizadas
 - [x] Button
 - [x] Header
 - [x] Checkbox
-- [ ] MultiRange
-- [ ] Product
+- [x] MultiRange
+- [x] Product
 - [ ] Dialog
 
 ### Paginas.
 
-- [ ] Home
+- [x] Home
 - [ ] Product
 - [ ] Cart

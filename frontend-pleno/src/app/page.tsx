@@ -3,12 +3,23 @@
 import { Checkbox } from "@/components/checkbox";
 import { Header } from "@/components/header";
 import { Input } from "@/components/input";
+import { ListProduct } from "@/components/list-product";
 import MultiRangeSlider from "@/components/multi-range/multi-range-slider";
 import { Search } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface ProductProps {
+  id: number;
+  title: string;
+  body: string;
+  price: number;
+  category: string;
+}
 
 export default function Home() {
+  const [listProduct, setListProduct] = useState<ProductProps[]>([]);
+
   const [title, setTitle] = useState('')
   const [priceMin, setPriceMin] = useState(0);
   const [priceMax, setPriceMax] = useState(500);
@@ -19,6 +30,39 @@ export default function Home() {
     { label: 'Sandálias', checked: false },
     { label: 'Tênis', checked: false },
   ]);
+
+  useEffect(() => {
+    async function getProducts() {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+
+        if (!response.ok) {
+          throw new Error('Erro ao carregar os produtos');
+        }
+
+        const data = await response.json();
+        const firstTenProducts = data.slice(0, 10).map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          body: item.body,
+          price: parseFloat((Math.random() * 500).toFixed(2)),
+          category: getRandomCategory(),
+        }));
+
+        setListProduct(firstTenProducts);
+      } catch (error) {
+        console.error('Erro:', error);
+      }
+    }
+
+    getProducts();
+  }, []);
+
+  const getRandomCategory = (): string => {
+    const categories = ['Botas', 'Chinelos', 'Chuteiras', 'Sandálias', 'Tênis'];
+    const randomIndex = Math.floor(Math.random() * categories.length);
+    return categories[randomIndex];
+  };
 
   const handleCheckboxChange = (index: number) => {
     const updatedCheckboxes = [...checkboxes];
@@ -31,6 +75,10 @@ export default function Home() {
     setPriceMin(priceMin)
     setPriceMax(priceMax)
   }
+
+  const addToCart = (productId: number) => {
+    console.log(productId)
+  };
 
   return (
     <main className="flex flex-col w-screen">
@@ -102,6 +150,21 @@ export default function Home() {
                 <p className="w-full bg-gray-300 rounded-b-lg py-2 pl-4 text-sm">R$ {priceMax}</p>
               </div>
             </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:ml-4 m-4 mx-auto">
+            {
+              listProduct.map((product) => (
+                <ListProduct
+                  key={product.id}
+                  title={product.title}
+                  price={product.price}
+                  body={product.body}
+                  category={product.category}
+                  onClick={() => addToCart(product.id)}
+                  id={product.id.toString()}
+                />
+              ))}
           </div>
         </div>
       </section>
