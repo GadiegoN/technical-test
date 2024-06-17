@@ -27,7 +27,7 @@ Ferramentas utilizadas
 - [x] Input
 - [x] Button
 - [x] Header
-- [ ] Checkbox
+- [x] Checkbox
 - [ ] MultiRange
 - [ ] Product
 - [ ] Dialog
