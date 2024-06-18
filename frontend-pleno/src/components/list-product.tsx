@@ -19,7 +19,7 @@ export function ListProduct({ body, category, id, onClick, price, title }: Produ
                 width={330}
                 height={330}
                 alt="Imagem com o fundo laranjado e com um Tenis preto com o solado branco"
-                className="object-cover rounded-lg h-96 w-80 hover:scale-110"
+                className="object-cover rounded-lg h-96 w-80 hover:shadow-lg cursor-pointer"
             />
 
             <Link href={`/product/${category}/${id}`}>

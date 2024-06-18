@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/button';
-import { Trash } from 'lucide-react';
+import { Loader, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
@@ -50,7 +50,12 @@ export default function Cart() {
     };
 
     if (isLoading) {
-        return <p>Carregando...</p>
+        return (
+            <div className="h-screen fixed bg-gray-200 w-full flex items-center justify-center gap-2">
+                <Loader size={32} className="animate-spin text-primary" />
+                <p className="font-semibold text-xl">Carregando...</p>
+            </div>
+        )
     }
 
     return (
@@ -88,7 +93,9 @@ export default function Cart() {
                     ))}
                 </div>
             ) : (
-                <p className="text-lg">Seu carrinho está vazio</p>
+                <div className="lg:h-full flex justify-center">
+                    <p className="text-lg my-10 lg:ml-10 lg:mt-40">Seu carrinho está vazio</p>
+                </div>
             )}
 
             <div className="w-full lg:w-4/12 h-80 border p-4 rounded shadow flex flex-col justify-around">
