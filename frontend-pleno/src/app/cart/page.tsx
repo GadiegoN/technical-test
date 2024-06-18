@@ -1,7 +1,9 @@
 'use client';
 import { Button } from '@/components/button';
+import { Modal } from '@/components/modal';
 import { Loader, Trash } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 interface ProductProps {
@@ -16,6 +18,7 @@ interface ProductProps {
 export default function Cart() {
     const [cartStore, setCartStore] = useState<ProductProps[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [openModal, setOpenModal] = useState(false)
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -111,9 +114,14 @@ export default function Cart() {
                     <p className="text-gray-500">Valor Total:</p>
                     <p className="font-semibold text-xl line-clamp-1">R$ {calculateSubtotal().toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                 </div>
-
-                <Button title="Finalizar pedido" onClick={() => { }} />
+                {cartStore.length > 0 ? (
+                    <Button title="Finalizar pedido" onClick={() => setOpenModal(true)} />
+                ) : (
+                    <Link href="/"><Button onClick={() => { }} title="Voltar as compras" /></Link>
+                )}
             </div>
+
+            <Modal showModal={openModal} closeModal={() => setOpenModal(false)} />
         </div>
     );
 }
